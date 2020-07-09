@@ -1,6 +1,11 @@
-FROM 036136800740.dkr.ecr.us-west-2.amazonaws.com/programming/ubuntu1804:1.8
-RUN DEBIAN_FRONTEND=noninteractive \
-&& curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+FROM ubuntu:18.04
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update
+RUN apt-get install -yq curl php gnupg wget sudo lsb-release debconf-utils
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 && echo 'deb https://dl.yarnpkg.com/debian/ stable main' | tee /etc/apt/sources.list.d/yarn.list \
 && apt-get update && apt-get install -yq yarn \
 && echo 'mysql-community-server mysql-community-server/root-pass password root' | debconf-set-selections \
